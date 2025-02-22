@@ -62,6 +62,48 @@ def detect_intrusion(request):
             return JsonResponse({'error': f'Server error: {str(e)}'}, status=500)
 
     return JsonResponse({'error': 'Invalid request method'}, status=405)
+from django.shortcuts import render, redirect
+from .forms import PDFUploadForm, DocumentUploadForm, ImageUploadForm
+from .models import UploadedFile
+
+def upload_file(request):
+    pdf_form = PDFUploadForm()
+    doc_form = DocumentUploadForm()
+    image_form = ImageUploadForm()
+
+    if request.method == "POST":
+        if "pdf_upload" in request.POST:
+            pdf_form = PDFUploadForm(request.POST, request.FILES)
+            if pdf_form.is_valid():
+                file_instance = pdf_form.save(commit=False)
+                file_instance.file_type = 'pdf'
+                file_instance.save()
+                return redirect('upload_file')
+
+        elif "doc_upload" in request.POST:
+            doc_form = DocumentUploadForm(request.POST, request.FILES)
+            if doc_form.is_valid():
+                file_instance = doc_form.save(commit=False)
+                file_instance.file_type = 'doc'
+                file_instance.save()
+                return redirect('upload_file')
+
+        elif "image_upload" in request.POST:
+            image_form = ImageUploadForm(request.POST, request.FILES)
+            if image_form.is_valid():
+                file_instance = image_form.save(commit=False)
+                file_instance.file_type = 'image'
+                file_instance.save()
+                return redirect('upload_file')
+
+    files = UploadedFile.objects.all()
+    return render(request, "home.html", {
+        "pdf_form": pdf_form,
+        "doc_form": doc_form,
+        "image_form": image_form,
+        "files": files
+    })
+
 
 # ✅ Home View (For Testing)
 def home(request):

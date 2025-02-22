@@ -3,31 +3,80 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Upload Files</title>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+    <title>Upload Documents</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            text-align: center;
+            padding: 20px;
+        }
+        .container {
+            background: white;
+            max-width: 600px;
+            margin: auto;
+            padding: 20px;
+            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+            border-radius: 10px;
+        }
+        h2 {
+            color: #333;
+        }
+        form {
+            margin-bottom: 20px;
+        }
+        input[type="file"] {
+            display: none;
+        }
+        label {
+            display: block;
+            background: #007BFF;
+            color: white;
+            padding: 10px;
+            cursor: pointer;
+            border-radius: 5px;
+        }
+        label:hover {
+            background: #0056b3;
+        }
+        button {
+            background: #28a745;
+            color: white;
+            padding: 10px 15px;
+            border: none;
+            cursor: pointer;
+            border-radius: 5px;
+        }
+        button:hover {
+            background: #218838;
+        }
+    </style>
 </head>
-<body class="bg-light">
-    <div class="container mt-5">
-        <h2 class="text-center">Upload Files</h2>
-        <form method="POST" enctype="multipart/form-data" class="p-4 bg-white shadow rounded">
+<body>
+    <div class="container">
+        <h2><i class="fa fa-file-pdf"></i> Upload Government Document (PDF Only)</h2>
+        <form method="POST" enctype="multipart/form-data">
             {% csrf_token %}
+            <label for="pdfFile">Choose PDF</label>
+            <input type="file" id="pdfFile" name="pdf_file" accept=".pdf">
+            <button type="submit" name="pdf_upload">Upload PDF</button>
+        </form>
 
-            <!-- Government Documents (PDF) -->
-            <h4>Government Document Upload (PDF Only)</h4>
-            {{ gov_doc_form.as_p }}
-            <hr>
+        <h2><i class="fa fa-file-alt"></i> Upload Document (CSV, TXT, DOCX)</h2>
+        <form method="POST" enctype="multipart/form-data">
+            {% csrf_token %}
+            <label for="docFile">Choose Document</label>
+            <input type="file" id="docFile" name="doc_file" accept=".csv,.txt,.doc,.docx">
+            <button type="submit" name="doc_upload">Upload Document</button>
+        </form>
 
-            <!-- Document Files (CSV, TXT, DOCX) -->
-            <h4>Document Upload (CSV, TXT, DOCX)</h4>
-            {{ doc_form.as_p }}
-            <hr>
-
-            <!-- Image Upload (JPG, PNG) -->
-            <h4>Image Upload (JPG, PNG)</h4>
-            {{ img_form.as_p }}
-            <hr>
-
-            <button type="submit" class="btn btn-primary">Upload</button>
+        <h2><i class="fa fa-image"></i> Upload Image (JPG, PNG)</h2>
+        <form method="POST" enctype="multipart/form-data">
+            {% csrf_token %}
+            <label for="imgFile">Choose Image</label>
+            <input type="file" id="imgFile" name="img_file" accept=".jpg,.jpeg,.png">
+            <button type="submit" name="image_upload">Upload Image</button>
         </form>
     </div>
 </body>

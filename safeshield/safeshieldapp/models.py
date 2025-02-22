@@ -30,33 +30,21 @@ class Ticket(models.Model):
 
     def __str__(self):
         return f"Ticket {self.id} - {self.status}"
+from django.core.exceptions import ValidationError
 
-
-# Custom User Model with OTP and fixed conflicts
+# Model to store uploaded files
 from django.db import models
 
-# Function to store files in respective folders
-def upload_to_gov(instance, filename):
-    return f'government_docs/{filename}'
+class UploadedFile(models.Model):
+    FILE_TYPES = [
+        ('pdf', 'PDF Document'),
+        ('doc', 'Document File'),
+        ('image', 'Image File'),
+    ]
 
-def upload_to_docs(instance, filename):
-    return f'documents/{filename}'
+    file = models.FileField(upload_to='uploads/')
+    file_type = models.CharField(max_length=10, choices=FILE_TYPES)
+    uploaded_at = models.DateTimeField(auto_now_add=True)
 
-def upload_to_images(instance, filename):
-    return f'images/{filename}'
-
-# Government Documents (PDFs only)
-class GovernmentDocument(models.Model):
-    title = models.CharField(max_length=255)
-    file = models.FileField(upload_to=upload_to_gov)
-
-# General Documents (CSV, TXT, DOC)
-class GeneralDocument(models.Model):
-    title = models.CharField(max_length=255)
-    file = models.FileField(upload_to=upload_to_docs)
-
-# Images (JPG, PNG)
-class ImageUpload(models.Model):
-    title = models.CharField(max_length=255)
-    file = models.ImageField(upload_to=upload_to_images)
-
+    def __str__(self):
+        return self.file.name
