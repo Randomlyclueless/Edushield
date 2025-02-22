@@ -33,23 +33,30 @@ class Ticket(models.Model):
 
 
 # Custom User Model with OTP and fixed conflicts
-class CustonerUser(AbstractUser):
-    otp_secret = models.CharField(max_length=16, blank=True, null=True)
+from django.db import models
 
-    def generate_otp_secret(self):
-        if not self.otp_secret:
-            self.otp_secret = pyotp.random_base32()
-            self.save()
+# Function to store files in respective folders
+def upload_to_gov(instance, filename):
+    return f'government_docs/{filename}'
 
-    # Fix conflicts by adding related_name to avoid clashes with auth.User
-    groups = models.ManyToManyField(
-        Group,
-        related_name="custoneruser_groups",  # Changed related_name to avoid conflict
-        blank=True
-    )
+def upload_to_docs(instance, filename):
+    return f'documents/{filename}'
 
-    user_permissions = models.ManyToManyField(
-        Permission,
-        related_name="custoneruser_permissions",  # Changed related_name to avoid conflict
-        blank=True
-    )
+def upload_to_images(instance, filename):
+    return f'images/{filename}'
+
+# Government Documents (PDFs only)
+class GovernmentDocument(models.Model):
+    title = models.CharField(max_length=255)
+    file = models.FileField(upload_to=upload_to_gov)
+
+# General Documents (CSV, TXT, DOC)
+class GeneralDocument(models.Model):
+    title = models.CharField(max_length=255)
+    file = models.FileField(upload_to=upload_to_docs)
+
+# Images (JPG, PNG)
+class ImageUpload(models.Model):
+    title = models.CharField(max_length=255)
+    file = models.ImageField(upload_to=upload_to_images)
+

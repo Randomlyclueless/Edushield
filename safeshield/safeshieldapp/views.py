@@ -1,8 +1,5 @@
-<<<<<<< HEAD
 from django.shortcuts import render
-=======
 from django.shortcuts import redirect, render
->>>>>>> 9637fc1da9747263150cfa660b8088244e0c1432
 from django.contrib.auth.models import User
 from django.contrib.auth import authenticate, login as auth_login, logout
 from django.http import JsonResponse
@@ -75,3 +72,5 @@ def user_login(request):  # Renamed function to avoid conflict
 
 def signup(request):
     return render(request, 'signup.html')
+def upload(request):
+    return render(request,'upload.html')
