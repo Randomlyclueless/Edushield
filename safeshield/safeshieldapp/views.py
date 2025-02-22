@@ -1,18 +1,19 @@
-from django.shortcuts import render
-<<<<<<< HEAD
+from django.shortcuts import redirect, render
 from django.contrib.auth.models import User
 from django.contrib.auth import authenticate, login as auth_login, logout
-=======
 from django.http import JsonResponse
 import joblib
 import numpy as np
 import json
 from .models import Ticket
 from .utils import send_intrusion_alert, block_ip
->>>>>>> 2b049564096046a540331916de262d3aedf54ea0
+from django.contrib import messages
+import random
+from django.core.mail import send_mail
+from django.conf import settings
 
 # ✅ Load the AI model once at startup
-MODEL_PATH = r"C:\Users\SAINATH\OneDrive\saipython\Pictures\Documents\GitHub\Edushield\safeshield\model\random_forest_model.pkl"
+MODEL_PATH = r"D:\Python projects\Edushield\safeshield\model\safeshiel_model.pkl"
 model = joblib.load(MODEL_PATH)
 
 def detect_intrusion(request):
@@ -64,12 +65,7 @@ def detect_intrusion(request):
 # ✅ Home View (For Testing)
 def home(request):
     return render(request, 'home.html')
-<<<<<<< HEAD
 
 def user_login(request):  # Renamed function to avoid conflict
     return render(request, 'login.html')
 
-def signup(request):
-    return render(request, 'signup.html')
-=======
->>>>>>> 2b049564096046a540331916de262d3aedf54ea0

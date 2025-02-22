@@ -1,4 +1,6 @@
 from django.db import models
+from django.contrib.auth.models import AbstractUser, Group, Permission
+import pyotp
 
 # Model to store detected intrusions
 class Intrusion(models.Model):
@@ -28,3 +30,26 @@ class Ticket(models.Model):
 
     def __str__(self):
         return f"Ticket {self.id} - {self.status}"
+
+
+# Custom User Model with OTP and fixed conflicts
+class CustonerUser(AbstractUser):
+    otp_secret = models.CharField(max_length=16, blank=True, null=True)
+
+    def generate_otp_secret(self):
+        if not self.otp_secret:
+            self.otp_secret = pyotp.random_base32()
+            self.save()
+
+    # Fix conflicts by adding related_name to avoid clashes with auth.User
+    groups = models.ManyToManyField(
+        Group,
+        related_name="custoneruser_groups",  # Changed related_name to avoid conflict
+        blank=True
+    )
+
+    user_permissions = models.ManyToManyField(
+        Permission,
+        related_name="custoneruser_permissions",  # Changed related_name to avoid conflict
+        blank=True
+    )
