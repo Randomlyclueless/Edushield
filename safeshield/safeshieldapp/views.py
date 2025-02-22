@@ -61,6 +61,8 @@ def detect_intrusion(request):
     return JsonResponse({'error': 'Invalid request method'}, status=405)
 
 
+
+
 # ✅ File Upload View (Restricts to Authenticated Users)
 @login_required
 def upload_file(request):
@@ -124,6 +126,8 @@ def user_login(request):
 
 def signup(request):
     return render(request, 'signup.html')
+
+
 
 # ✅ Upload Page
 @login_required
