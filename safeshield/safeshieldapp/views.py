@@ -1,4 +1,8 @@
+<<<<<<< HEAD
 from django.shortcuts import render
+=======
+from django.shortcuts import redirect, render
+>>>>>>> 9637fc1da9747263150cfa660b8088244e0c1432
 from django.contrib.auth.models import User
 from django.contrib.auth import authenticate, login as auth_login, logout
 from django.http import JsonResponse
@@ -7,9 +11,13 @@ import numpy as np
 import json
 from .models import Ticket
 from .utils import send_intrusion_alert, block_ip
+from django.contrib import messages
+import random
+from django.core.mail import send_mail
+from django.conf import settings
 
 # ✅ Load the AI model once at startup
-MODEL_PATH = r"C:\Users\SAINATH\OneDrive\saipython\Pictures\Documents\GitHub\Edushield\safeshield\model\random_forest_model.pkl"
+MODEL_PATH = r"D:\Python projects\Edushield\safeshield\model\safeshiel_model.pkl"
 model = joblib.load(MODEL_PATH)
 
 def detect_intrusion(request):
