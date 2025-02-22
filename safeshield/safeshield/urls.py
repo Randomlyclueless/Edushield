@@ -12,3 +12,8 @@ urlpatterns = [
     path('signup/', views.signup, name='signup'),  
     path('verify_otp/', views.verify_otp, name='verify_otp'),
 ]
+from django.conf import settings
+from django.conf.urls.static import static
+
+urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
