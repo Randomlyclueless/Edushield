@@ -1,0 +1,148 @@
+/* General Styling */
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: "Poppins", sans-serif;
+}
+
+/* Full Page Layout */
+
+section {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  height: 100vh;
+  background: url("bg2.jpg") no-repeat;
+  background-size: cover;
+  background-position: center;
+  animation: animatebg 5s linear infinite;
+}
+
+/* Background Animation */
+
+@keyframes animatebg {
+  100% {
+    filter: hue-rotate(360deg);
+  }
+}
+
+/* Signup Box (Same as login-box) */
+
+.login-box {
+  position: relative;
+  width: 400px;
+  padding: 40px;
+  background: transparent;
+  border: 2px solid rgba(255, 255, 255, 0.5);
+  border-radius: 20px;
+  box-shadow: 0 0 10px rgba(255, 0, 0, 0.5);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  backdrop-filter: blur(15px);
+}
+
+h2 {
+  font-size: 2em;
+  color: #fff;
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+/* Input Box Styling */
+
+.input-box {
+  position: relative;
+  width: 100%;
+  margin: 20px 0;
+}
+
+.input-box input {
+  width: 100%;
+  background: transparent;
+  border: none;
+  outline: none;
+  font-size: 1em;
+  color: #fff;
+  padding: 10px 5px;
+  border-bottom: 2px solid #fff;
+}
+
+.input-box label {
+  position: absolute;
+  top: 50%;
+  left: 5px;
+  transform: translateY(-50%);
+  font-size: 1em;
+  color: #aaa;
+  transition: 0.3s;
+  pointer-events: none;
+}
+
+/* Move label up when input is focused or has text */
+
+.input-box input:focus ~ label,
+.input-box input:valid ~ label {
+  top: 0;
+  font-size: 0.8em;
+  color: #ffcc00;
+}
+
+.input-box .icon {
+  position: absolute;
+  right: 10px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: #fff;
+}
+
+/* Sign Up Button */
+
+button {
+  width: 100%;
+  height: 40px;
+  padding: 10px;
+  background: #fff;
+  border: none;
+  border-radius: 40px;
+  font-size: 1em;
+  font-weight: 500;
+  cursor: pointer;
+  color: #000;
+  transition: 0.3s;
+}
+
+button:hover {
+  background: #e6b800;
+}
+
+/* Link to Login Page */
+
+.register-link {
+  font-size: 0.9em;
+  color: #fff;
+  margin-top: 15px;
+}
+
+.register-link a {
+  font-size: 0.9em;
+  color: #fff;
+  text-align: center;
+  margin: 25px 0 10px;
+  font-weight: bold;
+}
+
+.register-link a:hover {
+  text-decoration: underline;
+}
+
+/* Mobile Responsiveness */
+
+@media (max-width: 360px) {
+  .login-box {
+    width: 100%;
+  }
+}
