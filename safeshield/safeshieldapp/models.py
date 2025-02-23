@@ -11,6 +11,9 @@ class UserProfile(AbstractUser):
     groups = models.ManyToManyField(Group, blank=True, related_name="user_profiles")
     user_permissions = models.ManyToManyField(Permission, blank=True, related_name="user_profiles")
 
+
+
+
     def verify_mfa(self, otp_code):
         """Verify MFA OTP Code"""
         totp = pyotp.TOTP(self.mfa_secret)
