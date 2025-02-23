@@ -140,3 +140,9 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 FAST2SMS_API_KEY = "SXjfwPZHFNh6Qm1z3xT7cYotrqOsyalniuMUKp49gCWJbB0Ae8Mo5wNaSnYugesPU7tjClpDVK8yr2x3"  # Replace with your API Key
 
 
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'smtp.gmail.com'  # or another SMTP server
+EMAIL_PORT = 587
+EMAIL_USE_TLS = True
+EMAIL_HOST_USER = 'your-email@gmail.com'  # Replace with your email
+EMAIL_HOST_PASSWORD = 'your-email-password'  

@@ -1,6 +1,6 @@
-# safeshieldapp/urls.py
 from django.urls import path
-from . import views
+from safeshieldapp import views
+from .views import send_sms_view, send_otp_view, verify_otp_view
 
 urlpatterns = [
     path('', views.home, name='home'),
@@ -11,19 +11,9 @@ urlpatterns = [
     path('landing/', views.landing, name='landing'),
     path('contactus/', views.contactus, name='contactus'),
     path('knowstat/', views.knowstat_view, name='knowstat'),
-
-]
-from django.urls import path
-from .views import send_sms_view
-
-urlpatterns = [
+    path('safespace/', views.safespace_view, name='safespace'),
+    
     path("send-sms/", send_sms_view, name="send_sms"),
-]
-from django.urls import path
-from .views import send_otp_view, verify_otp_view
-
-urlpatterns = [
     path("send-otp/", send_otp_view, name="send_otp"),
     path("verify-otp/", verify_otp_view, name="verify_otp"),
 ]
-

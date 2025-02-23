@@ -46,3 +46,7 @@ def verify_otp(phone_number, user_otp):
         return {"success": True, "message": "OTP verified successfully"}
     else:
         return {"success": False, "message": "Invalid or expired OTP"}
+# sms_utils.py
+def send_sms_fast2sms(phone_number, message):
+    # Your implementation here
+    pass  # Replace with actual code to send SMS
