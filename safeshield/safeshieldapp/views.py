@@ -1,7 +1,8 @@
 from django.shortcuts import render, redirect, get_object_or_404
+from django.contrib.auth import authenticate, login, logout  # Change 'Authenticate' to 'authenticate'
+from django.views.decorators.csrf import csrf_exempt
 from django.contrib.auth.models import User
-from django.contrib.auth import authenticate, login as auth_login, logout
-from django.http import JsonResponse, HttpResponse
+from django.http import JsonResponse
 import joblib
 import numpy as np
 import json
@@ -9,14 +10,7 @@ from .models import Ticket, UploadedFile
 from .forms import PDFUploadForm, DocumentUploadForm, ImageUploadForm
 from .utils import send_intrusion_alert, block_ip
 from django.contrib import messages
-from safeshieldapp import views
-from django.contrib.auth.forms import UserCreationForm,AuthenticationForm
-from django.contrib.auth import login
-
-
-
-from django.core.mail import send_mail
-from django.conf import settings
+from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
 from django.contrib.auth.decorators import login_required
 
 # ✅ Load AI Model
@@ -65,9 +59,6 @@ def detect_intrusion(request):
 
     return JsonResponse({'error': 'Invalid request method'}, status=405)
 
-
-
-
 # ✅ File Upload View (Restricts to Authenticated Users)
 @login_required
 def upload_file(request):
@@ -105,68 +96,45 @@ def upload_file(request):
         "files": files
     })
 
-
 # ✅ File Deletion (Ensures User Can Only Delete Their Own Files)
 @login_required
 def delete_file(request, file_id):
     file_instance = get_object_or_404(UploadedFile, id=file_id, user=request.user)
-    
-    if file_instance:
-        file_instance.file.delete()  # Delete file from storage
-        file_instance.delete()  # Delete record from database
-        messages.success(request, "File deleted successfully.")
-    else:
-        messages.error(request, "Unauthorized action!")
-
+    file_instance.file.delete()  # Delete file from storage
+    file_instance.delete()  # Delete record from database
+    messages.success(request, "File deleted successfully.")
     return redirect('upload_file')
-
 
 # ✅ Home View
 def home(request):
     return render(request, 'home.html')
-
-<<<<<<< HEAD
+@csrf_exempt
+# ✅ Signup View
 def signup(request):
     if request.method == "POST":
-        form = UserCreationForm(request.POST)  # type: ignore
+        form = UserCreationForm(request.POST)
         if form.is_valid():
             user = form.save()  # Save user
             login(request, user)  # Log in the user
-            return redirect("landing.html")  # Ensure "landing" is a valid URL name in urls.py
+            return redirect("/landing/")  # Ensure "landing" is a valid URL name in urls.py
     else:
         form = UserCreationForm()  # Show an empty form for GET requests
 
-    return render(request, "users/signup.html", {"form": form})  # Ensure correct template
+    return render(request, "signup.html", {"form": form})  # Ensure correct template
+
+# ✅ Login View
 def login_view(request):
     if request.method == "POST":
-        form = AuthenticationForm(request, data=request.POST or None)
+        form = AuthenticationForm(request, data=request.POST)
         if form.is_valid():
+            login(request, form.get_user())
+            return redirect("/landing/")  # Ensure this URL name exists
+    else:
+        form = AuthenticationForm()
 
-            login(request,form.get_user())
-            return redirect("landing.html")  # Ensure this URL name exists
-
-        else:
-            form = AuthenticationForm()
-        return render(request, "signup.html", {"form": form})
-
-
-def upload(request):
-    return render(request,'upload.html')
+    return render(request, "login.html", {"form": form})
 
 
-def landing(request):
-    return render(request,'landing.html')
-
-def contactus(request):
-    return render(request,'contactus.html')
-
-=======
-# ✅ User Authentication Views
-def user_login(request):
-    return render(request, 'login.html')
-
-def signup(request):
-    return render(request, 'signup.html')
 
 
 
@@ -174,4 +142,14 @@ def signup(request):
 @login_required
 def upload(request):
     return render(request, 'upload.html')
->>>>>>> 2227f2d1ff567dd9ced799159937efe645ac35a5
+
+# ✅ Landing Page
+def landing(request):
+    return render(request, 'landing.html')
+
+# ✅ Contact Us Page
+def contactus(request):
+    return render(request, 'contactus.html')
+
+def success(request):
+    return render(request, 'success.html')  # Ensure 'success.html' exists in your templates
