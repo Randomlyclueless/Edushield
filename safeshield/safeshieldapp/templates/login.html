@@ -6,90 +6,45 @@
     <meta charset="utf-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <title>Login</title>
+    <meta name="description" content="" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <link rel="stylesheet" href="{% static 'css/login.css' %}" />
-
-    <style>
-      /* ✅ ALERT MESSAGE STYLING */
-      .alert {
-        padding: 12px;
-        margin-bottom: 15px;
-        border-radius: 5px;
-        font-size: 16px;
-        font-weight: bold;
-        text-align: center;
-      }
-      .alert-danger {
-        background-color: #f8d7da;
-        color: #721c24;
-        border: 1px solid #f5c6cb;
-      }
-
-      /* ✅ FADE-OUT EFFECT */
-      @keyframes fadeOut {
-        from {
-          opacity: 1;
-        }
-        to {
-          opacity: 0;
-          display: none;
-        }
-      }
-    </style>
   </head>
-
   <body>
     <section>
-      <div class="login-box">
-        <form action="{% url 'login' %}" method="POST">
-          {% csrf_token %}
-          <h2>Login</h2>
-
-          <!-- ✅ Show error messages here -->
-          {% if messages %} {% for message in messages %}
-          <div class="alert alert-danger">{{ message }}</div>
-          {% endfor %} {% endif %}
-
-          <div class="input-box">
-            <span class="icon"></span>
-            <input type="text" name="username" required />
-            <label>Username</label>
-          </div>
-
-          <div class="input-box">
-            <span class="icon">
-              <ion-icon name="lock-closed-outline"></ion-icon>
-            </span>
-            <input type="password" name="password" required />
-            <label>Password</label>
-          </div>
-
-          <div class="remember-forgot">
-            <label><input type="checkbox" /> Remember Me</label>
-            <a href="#">Forgot Password?</a>
-          </div>
-
-          <button type="submit">Login</button>
-
-          <div class="register-link">
-            <p>
-              Don't have an account? <a href="{% url 'signup' %}">Register</a>
-            </p>
-          </div>
-        </form>
-      </div>
-    </section>
-
-    <script>
-      // ✅ AUTO-HIDE ALERT AFTER 5 SECONDS
-      setTimeout(function () {
-        let alerts = document.querySelectorAll(".alert");
-        alerts.forEach((alert) => {
-          alert.style.animation = "fadeOut 1s forwards";
-        });
-      }, 5000);
-    </script>
-
+    <div class="login-box">
+      <form action="{% url 'login' %}" method="POST">
+        {% csrf_token %}
+        <h2>Login</h2>  <div class="input-box">
+          <span class="icon"></span>
+          <input type="name" name="username" required />
+          <label>Name</label>
+        </div>
+        <div class="input-box">
+          <span class="icon"><ion-icon name="mail-outline"></span>
+          <input type="email" name="email" required />
+          <label>Email</label>
+        </div>
+        <div class="input-box">
+          <span class="icon"
+            ><ion-icon name="lock-closed-outline"></ion-icon
+          ></span>
+          <input type="password" name="password" required />
+          <label>Password</label>
+        </div>
+        <div class="remember-forgot">
+          <label><input type="checkbox" /> Remember Me</label>
+          <a href="#">Forgot Password?</a>
+        </div>
+        <button type="submit">Login</button>
+        <div class="register-link">
+          <p>
+            Don't have an account? Register</a>
+          </p>
+        </div>
+      </form>
+    </div>
+</section>
     <script
       type="module"
       src="https://unpkg.com/ionicons@5.5.2/dist/ionicons.esm.js"

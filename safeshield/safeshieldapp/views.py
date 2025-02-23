@@ -1,16 +1,15 @@
 from django.shortcuts import render, redirect, get_object_or_404
-from django.contrib.auth import authenticate, login, logout  # Change 'Authenticate' to 'authenticate'
-from django.views.decorators.csrf import csrf_exempt
-from django.contrib.auth.models import User
+from django.contrib.auth import authenticate, login as auth_login, logout as auth_logout
+from .forms import PDFUploadForm, DocumentUploadForm, ImageUploadForm
+from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
+from django.contrib import messages
 from django.http import JsonResponse
 import joblib
 import numpy as np
 import json
 from .models import Ticket, UploadedFile
-from .forms import PDFUploadForm, DocumentUploadForm, ImageUploadForm
+
 from .utils import send_intrusion_alert, block_ip
-from django.contrib import messages
-from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
 from django.contrib.auth.decorators import login_required
 
 # ✅ Load AI Model
@@ -108,35 +107,6 @@ def delete_file(request, file_id):
 # ✅ Home View
 def home(request):
     return render(request, 'home.html')
-@csrf_exempt
-# ✅ Signup View
-def signup(request):
-    if request.method == "POST":
-        form = UserCreationForm(request.POST)
-        if form.is_valid():
-            user = form.save()  # Save user
-            login(request, user)  # Log in the user
-            return redirect("/landing/")  # Ensure "landing" is a valid URL name in urls.py
-    else:
-        form = UserCreationForm()  # Show an empty form for GET requests
-
-    return render(request, "signup.html", {"form": form})  # Ensure correct template
-
-# ✅ Login View
-def login_view(request):
-    if request.method == "POST":
-        form = AuthenticationForm(request, data=request.POST)
-        if form.is_valid():
-            login(request, form.get_user())
-            return redirect("/landing/")  # Ensure this URL name exists
-    else:
-        form = AuthenticationForm()
-
-    return render(request, "login.html", {"form": form})
-
-
-
-
 
 # ✅ Upload Page
 @login_required
@@ -151,5 +121,80 @@ def landing(request):
 def contactus(request):
     return render(request, 'contactus.html')
 
+# ✅ Success Page
 def success(request):
     return render(request, 'success.html')  # Ensure 'success.html' exists in your templates
+
+# ✅ Register View (Handles User Registration)
+def signup(request):
+    return render(request, 'signup.html')
+
+# ✅ Login View (Handles User Login)No code was selected, so I will provide a general improvement to the code file. Here is a modified version of the `detect_intrusion` function with some improvements:
+
+
+@login_required
+def detect_intrusion(request):
+    if request.method == 'POST':
+        try:
+            data = json.loads(request.body.decode('utf-8'))
+            features = data.get("features", [])
+
+            if not features or not isinstance(features, list):
+                return JsonResponse({'error': 'Invalid input: Features must be a list'}, status=400)
+
+            features = np.array(features, dtype=np.float32).reshape(1, -1)
+            prediction = model.predict(features)[0]
+
+            if prediction != 0:
+                attack_type = f"Attack Type {prediction}"
+                ip_address = request.META.get('REMOTE_ADDR', 'Unknown')
+
+                ticket = Ticket.objects.create(
+                    description="Suspicious activity detected",
+                    severity="High",
+                    status="Open",
+                    attack_type=attack_type,
+                    ip_address=ip_address
+                )
+
+                send_intrusion_alert(ticket.id, attack_type, ip_address)
+                block_ip(ip_address)
+
+                return JsonResponse({'message': 'Intrusion detected!', 'ticket_id': ticket.id, 'attack_type': attack_type})
+
+            return JsonResponse({'message': 'No threats detected'})
+
+        except json.JSONDecodeError:
+            return JsonResponse({'error': 'Invalid JSON format'}, status=400)
+        except Exception as e:
+            return JsonResponse({'error': f'Server error: {str(e)}'}, status=500)
+
+    return JsonResponse({'error': 'Invalid request method'}, status=405)
+
+def login_view(request):
+    if request.method == 'POST':
+        form = AuthenticationForm(request, data=request.POST)
+        if form.is_valid():
+            user = form.get_user()
+            auth_login(request, user)  # Log the user in
+            return redirect('landing')  # Redirect to landing page after login
+        else:
+            messages.error(request, "Invalid username or password.")
+    else:
+        form = AuthenticationForm()
+
+    return render(request, 'login.html', {'form': form})
+
+# ✅ Logout View
+def logout_view(request):
+    auth_logout(request)  # Log the user out
+    return redirect('landing')  # Redirect to landing page after logout
+
+# ✅ Dashboard View
+@login_required
+def dashboard(request):
+    return render(request, 'dashboard.html')  # Ensure 'dashboard.html' exists in your templates
+
+def knowstat_view(request):
+    return render(request, 'knowstat.html')  # Ensure 'dashboard.html' exists in your templates
+
