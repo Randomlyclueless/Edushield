@@ -8,9 +8,10 @@ from safeshieldapp import views
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', views.home, name='home'), 
-    path('login/', views.user_login, name='login'),  
+    path('login/', views.login_view, name='login'),  
     path('signup/', views.signup, name='signup'),  
-    path('verify_otp/', views.verify_otp, name='verify_otp'),
+    path('landing/', views.landing, name='landing'),
+    path('contactus/', views.contactus, name='contactus'),
 ]
 from django.conf import settings
 from django.conf.urls.static import static

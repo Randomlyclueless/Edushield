@@ -1,0 +1,101 @@
+/* General Styling */
+
+body {
+  font-family: "Poppins", sans-serif;
+  background: linear-gradient(135deg, #1e3c72, #2a5298);
+  color: #fff;
+  margin: 0;
+  padding: 0;
+}
+
+/* Contact Section */
+
+#contact {
+  position: relative;
+  padding: 60px 0;
+}
+
+/* Container */
+
+.container {
+  background: rgba(255, 255, 255, 0.15);
+  backdrop-filter: blur(10px);
+  border-radius: 15px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+  padding: 40px;
+  max-width: 800px;
+  margin: auto;
+}
+
+/* Section Heading */
+
+h2 {
+  font-size: 32px;
+  font-weight: bold;
+  text-align: center;
+  margin-bottom: 30px;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+}
+
+/* Labels */
+
+.form-label {
+  font-weight: bold;
+}
+
+/* Form Controls */
+
+.form-control {
+  border-radius: 8px;
+  border: none;
+  padding: 10px;
+  font-size: 16px;
+}
+
+/* Button */
+
+.btn-primary {
+  background: #ffcc00;
+  border: none;
+  font-size: 18px;
+  font-weight: bold;
+  padding: 10px 20px;
+  border-radius: 8px;
+  transition: all 0.3s ease-in-out;
+}
+
+.btn-primary:hover {
+  background: #ff9900;
+  transform: scale(1.05);
+}
+
+/* Contact Details */
+
+h4 {
+  font-size: 22px;
+  margin-top: 20px;
+  text-transform: uppercase;
+  font-weight: bold;
+  text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.2);
+}
+
+p {
+  font-size: 18px;
+  color: #f0f0f0;
+}
+
+/* Responsive Design */
+
+@media (max-width: 768px) {
+  .container {
+    padding: 20px;
+  }
+  h2 {
+    font-size: 28px;
+  }
+  .btn-primary {
+    width: 100%;
+  }
+}

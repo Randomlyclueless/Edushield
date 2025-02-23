@@ -9,7 +9,12 @@ import json
 from .models import Ticket
 from .utils import send_intrusion_alert, block_ip
 from django.contrib import messages
-import random
+from safeshieldapp import views
+from django.contrib.auth.forms import UserCreationForm,AuthenticationForm
+from django.contrib.auth import login
+
+
+
 from django.core.mail import send_mail
 from django.conf import settings
 
@@ -109,13 +114,37 @@ def upload_file(request):
 def home(request):
     return render(request, 'home.html')
 
-def user_login(request):  # Renamed function to avoid conflict
-    return render(request, 'login.html')
-
 def signup(request):
-    return render(request, 'signup.html')
+    if request.method == "POST":
+        form = UserCreationForm(request.POST)  # type: ignore
+        if form.is_valid():
+            user = form.save()  # Save user
+            login(request, user)  # Log in the user
+            return redirect("landing.html")  # Ensure "landing" is a valid URL name in urls.py
+    else:
+        form = UserCreationForm()  # Show an empty form for GET requests
+
+    return render(request, "users/signup.html", {"form": form})  # Ensure correct template
+def login_view(request):
+    if request.method == "POST":
+        form = AuthenticationForm(request, data=request.POST or None)
+        if form.is_valid():
+
+            login(request,form.get_user())
+            return redirect("landing.html")  # Ensure this URL name exists
+
+        else:
+            form = AuthenticationForm()
+        return render(request, "signup.html", {"form": form})
+
+
 def upload(request):
     return render(request,'upload.html')
 
 
+def landing(request):
+    return render(request,'landing.html')
+
+def contactus(request):
+    return render(request,'contactus.html')
 
