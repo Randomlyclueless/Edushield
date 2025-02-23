@@ -79,6 +79,7 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'safeshield.wsgi.application'
 
+ALLOWED_HOSTS = ['*']
 
 # Database
 # https://docs.djangoproject.com/en/5.1/ref/settings/#databases
