@@ -136,4 +136,6 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+FAST2SMS_API_KEY = "SXjfwPZHFNh6Qm1z3xT7cYotrqOsyalniuMUKp49gCWJbB0Ae8Mo5wNaSnYugesPU7tjClpDVK8yr2x3"  # Replace with your API Key
+
 

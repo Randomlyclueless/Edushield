@@ -13,7 +13,7 @@ from .utils import send_intrusion_alert, block_ip
 from django.contrib.auth.decorators import login_required
 
 # ✅ Load AI Model
-MODEL_PATH = r"D:\Python projects\Edushield\safeshield\model\safeshiel_model.pkl"
+MODEL_PATH =r"C:\Users\SAINATH\OneDrive\saipython\Pictures\Documents\GitHub\Edushield\safeshield\model\safeshiel_model.pkl"
 model = joblib.load(MODEL_PATH)
 
 # ✅ Intrusion Detection View
@@ -197,4 +197,41 @@ def dashboard(request):
 
 def knowstat_view(request):
     return render(request, 'knowstat.html')  # Ensure 'dashboard.html' exists in your templates
+
+from django.http import JsonResponse
+from .sms_utils import send_sms_fast2sms
+
+def send_sms_view(request):
+    """Django view to send SMS via API request."""
+    phone_number = request.GET.get("phone")  # Get phone number from request
+    message = request.GET.get("message", "Hello from SafeShield!")  # Default message
+
+    if phone_number:
+        response = send_sms_fast2sms(phone_number, message)
+        return JsonResponse(response)
+    
+    return JsonResponse({"error": "Phone number is required"}, status=400)
+from django.http import JsonResponse
+from .sms_utils import send_otp, verify_otp
+
+def send_otp_view(request):
+    """API endpoint to send OTP to a phone number."""
+    phone_number = request.GET.get("phone")
+
+    if phone_number:
+        response = send_otp(phone_number)
+        return JsonResponse(response)
+    
+    return JsonResponse({"success": False, "message": "Phone number is required"}, status=400)
+
+def verify_otp_view(request):
+    """API endpoint to verify the OTP."""
+    phone_number = request.GET.get("phone")
+    user_otp = request.GET.get("otp")
+
+    if phone_number and user_otp:
+        response = verify_otp(phone_number, user_otp)
+        return JsonResponse(response)
+    
+    return JsonResponse({"success": False, "message": "Phone number and OTP are required"}, status=400)
 
