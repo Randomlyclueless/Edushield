@@ -20,7 +20,8 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'safeshieldapp',  # Your main Django app
+    'safeshieldapp',
+    'safeshield',  # Your main Django app
 ]
 
 MIDDLEWARE = [
@@ -38,7 +39,7 @@ ROOT_URLCONF = 'safeshield.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [os.path.join(BASE_DIR, 'safeshieldapp', 'templates')],  # Corrected template path
+        'DIRS': [BASE_DIR, 'safeshieldapp', 'templates'],  # Corrected template path
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -77,6 +78,8 @@ AUTH_PASSWORD_VALIDATORS = [
         'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator',
     },
 ]
+LOGIN_REDIRECT_URL = 'home'  # Redirect after login
+LOGOUT_REDIRECT_URL = 'home'  # Redirect after logout
 
 # Internationalization
 LANGUAGE_CODE = 'en-us'
@@ -87,6 +90,31 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 STATIC_URL = '/static/'
 STATICFILES_DIRS = [os.path.join(BASE_DIR, 'static')]  # Add a static folder
-
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 # Default primary key field type
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+import logging
+
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': False,
+    'handlers': {
+        'file': {
+            'level': 'DEBUG',
+            'class': 'logging.FileHandler',
+            'filename': 'debug.log',
+        },
+    },
+    'loggers': {
+        'django': {
+            'handlers': ['file'],
+            'level': 'DEBUG',
+            'propagate': True,
+        },
+    },
+}
+"[django-html]": {
+  "editor.defaultFormatter": "monosans.djlint"
+}

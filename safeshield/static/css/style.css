@@ -137,7 +137,10 @@ nav i {
   /* Dark cyber theme */
 }
 
-.lft-two,
+.left-two {
+  display: none;
+}
+
 .rght-two {
   display: flex;
   align-items: flex-start;
